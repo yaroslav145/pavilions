@@ -1,0 +1,21 @@
+table {
+    border: 2px solid black;
+    width: 99%;
+    margin: 0.5%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+
+table td {
+    padding: 8px;
+    line-height: 20px;
+    text-align: center;
+    border: 1px solid black;
+}
+
+
+.tableTitle
+{
+    border: 2px solid black;
+}
