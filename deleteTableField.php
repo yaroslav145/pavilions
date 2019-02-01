@@ -1,7 +1,7 @@
 <?php
-    $link = mysqli_connect("localhost", "root", "", "employment_schedule") or die (mysqli_error());
-
-    session_start();
+    require_once( "DBwork.php" );
+    $link = mysqli_connect(DBwork::$ip, DBwork::$login, DBwork::$pass, "employment_schedule") or die (mysqli_error());
+        session_start();
 
     $query = mysqli_query($link, "SELECT * FROM pavilions WHERE id=".$_SESSION["lastEditFieldId"]);
 

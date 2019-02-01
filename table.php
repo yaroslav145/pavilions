@@ -12,7 +12,7 @@
             if(isset($_SESSION['id']))
             {
                 echo '<div>';
-                    if(isset($_SESSION['admin']))
+                    if($_SESSION['admin'] == 1)
                         echo '<a class="button28" href="admin.php">Панель администратора</a>';
                     echo '<a class="button28" href="exit.php">Выход</a>';
                 echo '</div>';
@@ -50,20 +50,8 @@
 			</tr>
 
             <?php
-                $arr_month = [
-                    'январь',
-                    'февраль',
-                    'март',
-                    'апрель',
-                    'май',
-                    'июнь',
-                    'июль',
-                    'август',
-                    'сентябрь',
-                    'октябрь',
-                    'ноябрь',
-                    'декабрь'
-                ];
+                require_once( "DateConvertRus.php" );
+                require_once( "DBwork.php" );
 
                 $link = mysqli_connect("localhost", "root", "", "employment_schedule") or die (mysqli_error());
 
@@ -72,8 +60,7 @@
                 while($row = mysqli_fetch_array($query))
                 {
                     echo "<tr>";
-                    $month_id = date('n', strtotime($row["date"])) - 1;
-                    echo "<td>".$arr_month[$month_id]."</td>";
+                    echo "<td>".DateConvertRus::dateToMonth($row["date"])."</td>";
                     echo "<td>".$row["date"]."</td>";
 
                     for($i = 0; $i < 3; $i++)
@@ -97,7 +84,7 @@
                                 echo '
                                     <form method="post" action="editTableFieldPage.php">
                                       <input type="hidden" name="fieldId" value="'.$row2["id"].'">
-                                      <td><input type="submit" value="E"></td>
+                                      <td><input type="submit" value="+"></td>
                                     </form>
                                      ';
                             }
@@ -120,7 +107,7 @@
                                     <form action="tableRecordPage.php">
                                         <input type="hidden" name="date" value="' . $row["date"] . '">
                                         <input type="hidden" name="pav" value="' . ($i + 1) . '">
-                                        <td><input type="submit" value="E"></td>
+                                        <td><input type="submit" value="+"></td>
                                     </form>
                                 ';
                             }
