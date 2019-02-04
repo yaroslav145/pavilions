@@ -67,6 +67,8 @@
 
                 $current_date = $min_date;
 
+                $query = mysqli_query($link, "SELECT * FROM pavilions");
+
                 for($i = 0; $i < $days_count; $i++)
                 {
                     echo "<tr>";
@@ -75,34 +77,39 @@
 
                     $current_date = DateWork::addDaysToDate($current_date, 1);
 
-                    for($j = 0; $j < 3; $j++)
-                    {
-                        $query = mysqli_query($link, "SELECT * FROM pavilions WHERE date='".$current_date."' AND pavilion_id=".$j);
+                    for($j = 0; $j < 3; $j++) {
 
-                        if($row = mysqli_fetch_array($query))
-                        {
-                            $fio_q = mysqli_query($link, "SELECT fio FROM users WHERE user_id=".$row["owner_id"]);
+                        $rowspan = 0;
+
+                        foreach ($query as $key => $val) {
+                            if(($val["date_start"] == $current_date) and ($val["pavilion_id"] == $j)) {
+                                $rowspan = dateWork::getDaysCountBetwenDates($val["date_start"], $val["date_end"]) + 1;
+                            }
+                        }
+
+                        if($rowspan != 0) {
+                            $fio_q = mysqli_query($link, "SELECT fio FROM users WHERE user_id=" . $val["owner_id"]);
                             $fio_row = mysqli_fetch_array($fio_q);
 
-                            echo "
-                                <td>" . $row["class"] . "</td>
-                                <td>" . $fio_row["fio"] . "</td>
-                                <td>" . $row["work_type"] . "</td>
-                             ";
+                            echo '
+                                <td rowspan="'.$rowspan.'">' . $val["class"] . '</td>
+                                <td rowspan="'.$rowspan.'">' . $fio_row["fio"] . '</td>
+                                <td rowspan="'.$rowspan.'">' . $val["work_type"] . '</td>
+                            ';
 
 
-                            if((isset($_SESSION['id'])) && (($row["owner_id"] === $_SESSION['id']) || ($_SESSION['admin'] == 1)))
+                            if($_SESSION['admin'] == 1)
                             {
                                 echo '
                                     <form method="post" action="editTableFieldPage.php">
-                                      <input type="hidden" name="fieldId" value="'.$row["id"].'">
+                                      <input type="hidden" name="fieldId" value="'.$val["id"].'">
                                       <td><input type="submit" value="+"></td>
                                     </form>
                                      ';
                             }
                             else
                             {
-                                echo "<td>-</td>";
+                                echo '<td>-</td>';
                             }
                         }
                         else
@@ -117,7 +124,7 @@
                             {
                                 echo '
                                     <form action="tableRecordPage.php">
-                                        <input type="hidden" name="date" value="' . $row["date"] . '">
+                                        <input type="hidden" name="date" value="' . $val["date_start"] . '">
                                         <input type="hidden" name="pav" value="' . ($j + 1) . '">
                                         <td><input type="submit" value="+"></td>
                                     </form>
@@ -125,7 +132,7 @@
                             }
                             else
                             {
-                                echo '<td>-</td> ';
+
                             }
                         }
                     }
