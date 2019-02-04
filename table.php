@@ -50,40 +50,52 @@
 			</tr>
 
             <?php
-                require_once( "DateConvertRus.php" );
-                require_once( "DBwork.php" );
+                require_once("DateWork.php");
+                require_once("DBwork.php");
 
-                $link = mysqli_connect("localhost", "root", "", "employment_schedule") or die (mysqli_error());
+                $link = mysqli_connect(DBwork::$ip, DBwork::$login, DBwork::$pass, "employment_schedule") or die (mysqli_error());
 
-                $query = mysqli_query($link, "SELECT DISTINCT date FROM pavilions ORDER BY date");
+                $query = mysqli_query($link, "SELECT MIN(date_start), MAX(date_end) FROM pavilions");
 
-                while($row = mysqli_fetch_array($query))
+                if(!($row = mysqli_fetch_array($query)))
+                    exit;
+
+                $min_date = $row["MIN(date_start)"];
+                $max_date = $row["MAX(date_end)"];
+
+                $days_count = dateWork::getDaysCountBetwenDates($min_date, $max_date) + 1;
+
+                $current_date = $min_date;
+
+                for($i = 0; $i < $days_count; $i++)
                 {
                     echo "<tr>";
-                    echo "<td>".DateConvertRus::dateToMonth($row["date"])."</td>";
-                    echo "<td>".$row["date"]."</td>";
+                    echo "<td>".DateWork::dateToMonth($current_date)."</td>";
+                    echo "<td>".$current_date."</td>";
 
-                    for($i = 0; $i < 3; $i++)
+                    $current_date = DateWork::addDaysToDate($current_date, 1);
+
+                    for($j = 0; $j < 3; $j++)
                     {
-                        $query2 = mysqli_query($link, "SELECT * FROM pavilions WHERE date='".$row["date"]."' AND pavilion_id=".$i);
+                        $query = mysqli_query($link, "SELECT * FROM pavilions WHERE date='".$current_date."' AND pavilion_id=".$j);
 
-                        if($row2 = mysqli_fetch_array($query2))
+                        if($row = mysqli_fetch_array($query))
                         {
-                            $fio_q = mysqli_query($link, "SELECT fio FROM users WHERE user_id=".$row2["owner_id"]);
+                            $fio_q = mysqli_query($link, "SELECT fio FROM users WHERE user_id=".$row["owner_id"]);
                             $fio_row = mysqli_fetch_array($fio_q);
 
                             echo "
-                                <td>" . $row2["class"] . "</td>
+                                <td>" . $row["class"] . "</td>
                                 <td>" . $fio_row["fio"] . "</td>
-                                <td>" . $row2["work_type"] . "</td>
+                                <td>" . $row["work_type"] . "</td>
                              ";
 
 
-                            if((isset($_SESSION['id'])) && (($row2["owner_id"] === $_SESSION['id']) || ($_SESSION['admin'] == 1)))
+                            if((isset($_SESSION['id'])) && (($row["owner_id"] === $_SESSION['id']) || ($_SESSION['admin'] == 1)))
                             {
                                 echo '
                                     <form method="post" action="editTableFieldPage.php">
-                                      <input type="hidden" name="fieldId" value="'.$row2["id"].'">
+                                      <input type="hidden" name="fieldId" value="'.$row["id"].'">
                                       <td><input type="submit" value="+"></td>
                                     </form>
                                      ';
@@ -106,7 +118,7 @@
                                 echo '
                                     <form action="tableRecordPage.php">
                                         <input type="hidden" name="date" value="' . $row["date"] . '">
-                                        <input type="hidden" name="pav" value="' . ($i + 1) . '">
+                                        <input type="hidden" name="pav" value="' . ($j + 1) . '">
                                         <td><input type="submit" value="+"></td>
                                     </form>
                                 ';
