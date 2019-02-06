@@ -16,7 +16,7 @@
 
     $row["pavilion_id"]++;
 
-    if(($_SESSION['id'] != $row["owner_id"]) && ($_SESSION['admin'] != 1))
+    if($_SESSION['admin'] != 1)
         header("Location: table.php");
 ?>
 
@@ -33,7 +33,8 @@
     <body>
         <div class="win">
             <form method="post" action="editTableRecord.php">
-                <div><input type="date" name="date" value="<?php echo $row["date"];?>"></div>
+                <div><input type="date" name="date_start" value="<?php echo $row["date_start"];?>"></div>
+                <div><input type="date" name="date_end" value="<?php echo $row["date_end"];?>"></div>
                 Павильон
                 <div>
                     <input type="radio" name="pav" value=1 <?php if($row["pavilion_id"] == 1) {echo "checked";}?>>1

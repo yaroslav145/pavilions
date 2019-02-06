@@ -59,6 +59,7 @@
 
         $min_date = $row["MIN(date_start)"];
         $max_date = $row["MAX(date_end)"];
+        $max_date = DateWork::addDaysToDate($max_date, 15);
 
         $days_count = dateWork::getDaysCountBetwenDates($min_date, $max_date) + 1;
 
@@ -122,7 +123,7 @@
                     if (isset($_SESSION['id'])) {
                         echo '
                                     <form action="tableRecordPage.php">
-                                        <input type="hidden" name="date" value="' . $val["date_start"] . '">
+                                        <input type="hidden" name="date" value="' . $current_date . '">
                                         <input type="hidden" name="pav" value="' . ($j + 1) . '">
                                         <td><input type="submit" value="+"></td>
                                     </form>
@@ -142,9 +143,12 @@
             $current_date = DateWork::addDaysToDate($current_date, 1);
         }
 
-
         mysqli_close($link);
     ?>
 </table>
+<?php
+    if (isset($_SESSION['id']))
+        echo '<div><a class="button28" href="tableRecordPage.php">Добавить запись</a></div>';
+?>
 </body>
 </html>
