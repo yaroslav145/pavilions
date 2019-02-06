@@ -4,7 +4,9 @@
     $fio = $_POST["fio"];
     $code = $_POST["code"];
 
-    $link = mysqli_connect("localhost", "root", "", "employment_schedule") or die (mysqli_error());
+    require_once( "DBwork.php" );
+
+    $link = mysqli_connect(DBwork::$ip, DBwork::$login, DBwork::$pass, "employment_schedule") or die (mysqli_error());
 
     $query = mysqli_query($link, "SELECT * FROM users WHERE login = '".$login."'");
 
