@@ -72,7 +72,6 @@
         }
 
         $rowspan = array(0, 0, 0);
-        $flag = false;
 
         for ($i = 0; $i < $days_count; $i++) {
             echo "<tr>";
@@ -84,31 +83,27 @@
                 foreach ($all_schedule as $key => $val) {
                     if (($val["date_start"] == $current_date) and ($val["pavilion_id"] == $j)) {
                         $rowspan[$j] = dateWork::getDaysCountBetwenDates($val["date_start"], $val["date_end"]) + 1;
-                        $flag = true;
-                    }
-                }
 
-                if ($flag == true) {
-                    $flag = false;
+                        $fio_q = mysqli_query($link, "SELECT fio FROM users WHERE user_id=" . $val["owner_id"]);
+                        $fio_row = mysqli_fetch_array($fio_q);
 
-                    $fio_q = mysqli_query($link, "SELECT fio FROM users WHERE user_id=" . $val["owner_id"]);
-                    $fio_row = mysqli_fetch_array($fio_q);
-
-                    echo '
+                        echo '
                                 <td rowspan="' . $rowspan[$j] . '">' . $val["class"] . '</td>
                                 <td rowspan="' . $rowspan[$j] . '">' . $fio_row["fio"] . '</td>
                                 <td rowspan="' . $rowspan[$j] . '">' . $val["work_type"] . '</td>
                             ';
 
-                    if ($_SESSION['admin'] == 1) {
-                        echo '
+                        if (isset($_SESSION['admin']))
+                        if ($_SESSION['admin'] == 1) {
+                            echo '
                                         <form method="post" action="editTableFieldPage.php">
                                           <input type="hidden" name="fieldId" value="' . $val["id"] . '">
                                           <td rowspan="' . $rowspan[$j] . '"><input type="submit" value="+"></td>
                                         </form>
                                          ';
-                    } else {
-                        echo '<td>-</td>';
+                        } else {
+                            echo '<td rowspan="' . $rowspan[$j] . '">-</td>';
+                        }
                     }
                 }
 
@@ -123,7 +118,7 @@
                     if (isset($_SESSION['id'])) {
                         echo '
                                     <form action="tableRecordPage.php">
-                                        <input type="hidden" name="date" value="' . $current_date . '">
+                                        <input type="hidden" name="date_start" value="' . $current_date . '">
                                         <input type="hidden" name="pav" value="' . ($j + 1) . '">
                                         <td><input type="submit" value="+"></td>
                                     </form>
