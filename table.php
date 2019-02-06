@@ -88,20 +88,21 @@
                         $fio_row = mysqli_fetch_array($fio_q);
 
                         echo '
-                                <td rowspan="' . $rowspan[$j] . '">' . $val["class"] . '</td>
-                                <td rowspan="' . $rowspan[$j] . '">' . $fio_row["fio"] . '</td>
-                                <td rowspan="' . $rowspan[$j] . '">' . $val["work_type"] . '</td>
+                            <td rowspan="' . $rowspan[$j] . '">' . $val["class"] . '</td>
+                            <td rowspan="' . $rowspan[$j] . '">' . $fio_row["fio"] . '</td>
+                            <td rowspan="' . $rowspan[$j] . '">' . $val["work_type"] . '</td>
                             ';
 
-                        if (isset($_SESSION['admin']))
-                        if ($_SESSION['admin'] == 1) {
+                        if (isset($_SESSION['admin']) && ($_SESSION['admin'] == 1))
+                        {
                             echo '
-                                        <form method="post" action="editTableFieldPage.php">
-                                          <input type="hidden" name="fieldId" value="' . $val["id"] . '">
-                                          <td rowspan="' . $rowspan[$j] . '"><input type="submit" value="+"></td>
-                                        </form>
-                                         ';
-                        } else {
+                                <form method="post" action="editTableFieldPage.php">
+                                  <input type="hidden" name="fieldId" value="' . $val["id"] . '">
+                                  <td rowspan="' . $rowspan[$j] . '"><input type="submit" value="+"></td>
+                                </form>
+                                 ';
+                        }
+                        else {
                             echo '<td rowspan="' . $rowspan[$j] . '">-</td>';
                         }
                     }
@@ -117,11 +118,11 @@
 
                     if (isset($_SESSION['id'])) {
                         echo '
-                                    <form action="tableRecordPage.php">
-                                        <input type="hidden" name="date_start" value="' . $current_date . '">
-                                        <input type="hidden" name="pav" value="' . ($j + 1) . '">
-                                        <td><input type="submit" value="+"></td>
-                                    </form>
+                            <form action="tableRecordPage.php">
+                                <input type="hidden" name="date_start" value="' . $current_date . '">
+                                <input type="hidden" name="pav" value="' . ($j + 1) . '">
+                                <td><input type="submit" value="+"></td>
+                            </form>
                                 ';
                     } else {
                         echo '<td>-</td>';

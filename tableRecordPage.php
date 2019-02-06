@@ -11,7 +11,8 @@
         <div class="win">
             <form method="post" action="addTableRecord.php">
                 <div><input type="date" name="date_start" value="<?php if(isset($_GET["date_start"])) {echo $_GET["date_start"];}?>"></div>
-                <div><input type="date" name="date_end" value="<?php if(isset($_GET["date_start"])) {echo $_GET["date_start"];}?>"></div>
+                Продолжительность использования(дней)
+                <div><input type="text" name="days" value="<?php if(isset($_GET["days"])) {echo $_GET["days"];}?>"></div>
                 Павильон
                 <div>
                     <input type="radio" name="pav" value=1 <?php if(isset($_GET["pav"]) && ($_GET["pav"] == 1)) {echo "checked";}?>>1

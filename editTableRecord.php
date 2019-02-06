@@ -20,7 +20,7 @@
 
         if(($row["owner_id"] == $_SESSION["id"]) ||($_SESSION['admin'] == 1))
         {
-            $query = mysqli_query($link, "UPDATE pavilions SET date_dtart='".$date_start."', date_end='".$date_end."', class='".$class."', pavilion_id='".$pav."', work_type='".$workType."' 
+            $query = mysqli_query($link, "UPDATE pavilions SET date_start='".$date_start."', date_end='".$date_end."', class='".$class."', pavilion_id='".$pav."', work_type='".$workType."' 
             WHERE id=".$_SESSION["lastEditFieldId"]);
         }
     }
