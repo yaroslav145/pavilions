@@ -10,10 +10,12 @@
     $class = $_POST["class"];
     $workType = $_POST["workType"];
 
-    //|| (strtotime(date('Y-m-d')) > strtotime($date_start))
-
-    if(($days < 1) || ($pav < 1) || ($pav > 3) )
+    if(($days < 1) || ($pav < 1) || ($pav > 3) || (strtotime(date('Y-m-d')) > strtotime($date_start)))
+    {
+        echo "Неверно установлены параметры, возможно вы указали дату меньше сегодняшнего числа";
         exit;
+    }
+
 
     require_once("DateWork.php");
     require_once( "DBwork.php" );
@@ -38,7 +40,7 @@
     }
     else
     {
-        header("Location: tableRecordPage.php?class=".$class."&wt=".$workType);
+        header("Location: tableRecordPage.php?class=".$class."&wt=".$workType."&days=".$days."&date_start=".$date_start."&pav=".($pav + 1));
     }
 
     mysqli_close($link);

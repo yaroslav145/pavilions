@@ -52,10 +52,12 @@
 
         $link = mysqli_connect(DBwork::$ip, DBwork::$login, DBwork::$pass, "employment_schedule") or die (mysqli_error());
 
-        $query = mysqli_query($link, "SELECT MIN(date_start), MAX(date_end) FROM pavilions");
+        $query = mysqli_query($link, "SELECT MIN(date_start), MAX(date_end) FROM pavilions WHERE date_end >= NOW()");
 
         if (!($row = mysqli_fetch_array($query)))
             exit;
+
+        //if($max_date == )
 
         $min_date = $row["MIN(date_start)"];
         $max_date = $row["MAX(date_end)"];
@@ -116,7 +118,7 @@
                                 <td>-</td>                   
                             ';
 
-                    if (isset($_SESSION['id'])) {
+                    if (isset($_SESSION['id']) && (strtotime(date('Y-m-d')) <= strtotime($current_date))) {
                         echo '
                             <form action="tableRecordPage.php">
                                 <input type="hidden" name="date_start" value="' . $current_date . '">
