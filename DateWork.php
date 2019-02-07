@@ -30,14 +30,27 @@ class DateWork
     }
 
 
-    public static function getDaysCountBetwenDates($date_start, $date_end)
+    /*public static function getDaysCountBetwenDates($date_start, $date_end)
     {
         return (strtotime($date_end) -  strtotime($date_start)) / (3600*24);
-    }
+    }*/
 
     public static function addDaysToDate($date, $count)
     {
-        return date("Y-m-d",strtotime($date) +  $count * 24 * 3600);
+        $time = strtotime($date);
+
+        for($i = 0; $i < $count; ++$i)
+        {
+            $time += 24 * 3600;
+
+            if(date('N', $time) == 6)
+                $time += 24 * 3600;
+
+            if(date('N', $time) == 7)
+                $time += 24 * 3600;
+        }
+
+        return date("Y-m-d", $time);
     }
 }
 

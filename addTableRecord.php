@@ -34,7 +34,7 @@
 
     if(mysqli_num_rows($query) == 0)
     {
-        $query = mysqli_query($link, "INSERT INTO pavilions (date_start, date_end, class, work_type, owner_id, pavilion_id, id) VALUES('" . $date_start . "', '" . $date_end . "', '" . $class . "', '" . $workType . "', '" . $_SESSION["id"] . "', '" . $pav . "', NULL)");
+        $query = mysqli_query($link, "INSERT INTO pavilions (date_start, date_end, class, work_type, owner_id, pavilion_id, id, days) VALUES('" . $date_start . "', '" . $date_end . "', '" . $class . "', '" . $workType . "', '" . $_SESSION["id"] . "', '" . $pav . "', NULL, '" . $days . "')");
 
         header("Location: table.php");
     }

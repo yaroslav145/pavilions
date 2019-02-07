@@ -57,17 +57,13 @@
         if (!($row = mysqli_fetch_array($query)))
             exit;
 
-        //if($max_date == )
-
         $min_date = $row["MIN(date_start)"];
         $max_date = $row["MAX(date_end)"];
         $max_date = DateWork::addDaysToDate($max_date, 15);
 
-        $days_count = dateWork::getDaysCountBetwenDates($min_date, $max_date) + 1;
-
-        $current_date = $min_date;
-
         $query = mysqli_query($link, "SELECT * FROM pavilions");
+
+        $all_schedule = array();
 
         foreach ($query as $key => $val) {
             $all_schedule[] = $val;
@@ -75,16 +71,19 @@
 
         $rowspan = array(0, 0, 0);
 
-        for ($i = 0; $i < $days_count; $i++) {
+        for($current_date = $min_date; strtotime($current_date) < strtotime($max_date);
+            $current_date = DateWork::addDaysToDate($current_date, 1)) {
             echo "<tr>";
             echo "<td>" . DateWork::dateToMonth($current_date) . "</td>";
             echo "<td>" . $current_date . "</td>";
 
-            for ($j = 0; $j < 3; $j++) {
-
-                foreach ($all_schedule as $key => $val) {
-                    if (($val["date_start"] == $current_date) and ($val["pavilion_id"] == $j)) {
-                        $rowspan[$j] = dateWork::getDaysCountBetwenDates($val["date_start"], $val["date_end"]) + 1;
+            for ($j = 0; $j < 3; $j++)
+            {
+                foreach ($all_schedule as $key => $val)
+                {
+                    if (($val["date_start"] == $current_date) and ($val["pavilion_id"] == $j))
+                    {
+                        $rowspan[$j] = $val["days"];
 
                         $fio_q = mysqli_query($link, "SELECT fio FROM users WHERE user_id=" . $val["owner_id"]);
                         $fio_row = mysqli_fetch_array($fio_q);
@@ -103,14 +102,14 @@
                                   <td rowspan="' . $rowspan[$j] . '"><input type="submit" value="+"></td>
                                 </form>
                                  ';
-                        }
-                        else {
+                        } else
+                        {
                             echo '<td rowspan="' . $rowspan[$j] . '">-</td>';
                         }
                     }
                 }
 
-                if($rowspan[$j] == 0)
+                if ($rowspan[$j] == 0)
                 {
                     echo '
                                 <td>-</td>
@@ -118,7 +117,8 @@
                                 <td>-</td>                   
                             ';
 
-                    if (isset($_SESSION['id']) && (strtotime(date('Y-m-d')) <= strtotime($current_date))) {
+                    if (isset($_SESSION['id']) && (strtotime(date('Y-m-d')) <= strtotime($current_date)))
+                    {
                         echo '
                             <form action="tableRecordPage.php">
                                 <input type="hidden" name="date_start" value="' . $current_date . '">
@@ -126,19 +126,17 @@
                                 <td><input type="submit" value="+"></td>
                             </form>
                                 ';
-                    } else {
+                    } else
+                    {
                         echo '<td>-</td>';
                     }
-                }
-                else
+                } else
                 {
                     $rowspan[$j]--;
                 }
             }
 
             echo "</tr>";
-
-            $current_date = DateWork::addDaysToDate($current_date, 1);
         }
 
         mysqli_close($link);
