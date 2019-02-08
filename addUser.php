@@ -5,6 +5,7 @@
         exit;
 
     require_once( "DBwork.php" );
+    require_once("XSSWork.php");
 
     $link = mysqli_connect(DBwork::$ip, DBwork::$login, DBwork::$pass, "employment_schedule") or die (mysqli_error());
 
@@ -15,7 +16,6 @@
     $fio = XSSWork::noXSS($fio);
 
     $code = mysqli_real_escape_string($link, $_POST["code"]);
-
 
     $query = mysqli_query($link, "SELECT * FROM users WHERE login = '".$login."'");
 

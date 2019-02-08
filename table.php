@@ -97,7 +97,7 @@
                         if (isset($_SESSION['admin']) && ($_SESSION['admin'] == 1))
                         {
                             echo '
-                                <form method="post" action="editTableFieldPage.php">
+                                <form method="post" action="editTableRecordPage.php">
                                   <input type="hidden" name="fieldId" value="' . $val["id"] . '">
                                   <td rowspan="' . $rowspan[$j] . '"><input type="submit" value="+"></td>
                                 </form>
