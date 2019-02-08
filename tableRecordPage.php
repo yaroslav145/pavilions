@@ -30,7 +30,7 @@
                 </div>
                 <div>Курс</div>
                 <div>
-                    <select name="course" ">
+                    <select name="course">
                     <?php
                         for($i = 1; $i <= 6; ++$i)
                         {
@@ -46,7 +46,7 @@
                 <div>Вид работы</div>
                 <div><input type="text" size="30" name="workType" value="<?php if(isset($_GET["wt"])) {echo $_GET["wt"];}?>"></div>
                 <div><input type="submit" value="Добавить"></div>
-                <?php if(isset($_GET["message"])) {echo $_GET["message"];}?>
+                <?php if(isset($_GET["message"])) {echo '<div background="red">'.$_GET["message"].'</div>';}?>
             </form>
         </div>
     </body>

@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="button.css">
     <link rel="stylesheet" href="table.css">
     <link rel="stylesheet" href="body.css">
+    <link rel="stylesheet" href="userBackground.css">
 </head>
 
 <body>
@@ -71,6 +72,8 @@
 
         $rowspan = array(0, 0, 0);
 
+        $backColor = array(0, 0, 0);
+
         for($current_date = $min_date; strtotime($current_date) < strtotime($max_date);
             $current_date = DateWork::addDaysToDate($current_date, 1)) {
             echo "<tr>";
@@ -83,15 +86,26 @@
                 {
                     if (($val["date_start"] == $current_date) and ($val["pavilion_id"] == $j))
                     {
+                        if($backColor[$j] % 2 == 0)
+                        {
+                            $user_back = "userBack_1";
+                        }
+                        else
+                        {
+                            $user_back = "userBack_2";
+                        }
+
+                        $backColor[$j]++;
+
                         $rowspan[$j] = $val["days"];
 
                         $fio_q = mysqli_query($link, "SELECT fio FROM users WHERE user_id=" . $val["owner_id"]);
                         $fio_row = mysqli_fetch_array($fio_q);
 
                         echo '
-                            <td rowspan="' . $rowspan[$j] . '">' . $val["class"] . '</td>
-                            <td rowspan="' . $rowspan[$j] . '">' . $fio_row["fio"] . '</td>
-                            <td rowspan="' . $rowspan[$j] . '">' . $val["work_type"] . '</td>
+                            <td class="'.$user_back.'" rowspan="' . $rowspan[$j] . '">' . $val["class"] . '</td>
+                            <td class="'.$user_back.'" rowspan="' . $rowspan[$j] . '">' . $fio_row["fio"] . '</td>
+                            <td class="'.$user_back.'" rowspan="' . $rowspan[$j] . '">' . $val["work_type"] . '</td>
                             ';
 
                         if (isset($_SESSION['admin']) && ($_SESSION['admin'] == 1))
@@ -99,12 +113,12 @@
                             echo '
                                 <form method="post" action="editTableRecordPage.php">
                                   <input type="hidden" name="fieldId" value="' . $val["id"] . '">
-                                  <td rowspan="' . $rowspan[$j] . '"><input type="submit" value="+"></td>
+                                  <td class="'.$user_back.'" rowspan="' . $rowspan[$j] . '"><input type="submit" value="+"></td>
                                 </form>
                                  ';
                         } else
                         {
-                            echo '<td rowspan="' . $rowspan[$j] . '">-</td>';
+                            echo '<td class="'.$user_back.'" rowspan="' . $rowspan[$j] . '">-</td>';
                         }
                     }
                 }
