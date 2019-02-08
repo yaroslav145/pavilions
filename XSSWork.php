@@ -1,12 +1,5 @@
 <?php
-    /**
-     * Created by PhpStorm.
-     * User: Пользователь
-     * Date: 08.02.2019
-     * Time: 11:50
-     */
-
-    class noXSS
+    class XSSWork
     {
         public static function noXSS($s)
         {

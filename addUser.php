@@ -12,7 +12,7 @@
     $pass = mysqli_real_escape_string($link, $_POST["pass"]);
 
     $fio = mysqli_real_escape_string($link, $_POST["fio"]);
-    $fio = noXSS::noXSS($fio);
+    $fio = XSSWork::noXSS($fio);
 
     $code = mysqli_real_escape_string($link, $_POST["code"]);
 

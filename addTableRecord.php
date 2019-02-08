@@ -6,24 +6,24 @@
 
     require_once("DateWork.php");
     require_once( "DBwork.php" );
-    require_once( "noXSS.php" );
+    require_once("XSSWork.php");
 
     $link = mysqli_connect(DBwork::$ip, DBwork::$login, DBwork::$pass, "employment_schedule") or die (mysqli_error());
 
     $date_start = mysqli_real_escape_string($link, $_POST["date_start"]);
-    $date_start = noXSS::noXSS($date_start);
+    $date_start = XSSWork::noXSS($date_start);
 
     $days = mysqli_real_escape_string($link, $_POST["days"]);
-    $days = noXSS::noXSS($days);
+    $days = XSSWork::noXSS($days);
 
     $pav = mysqli_real_escape_string($link, $_POST["pav"]);
-    $pav = noXSS::noXSS($pav);
+    $pav = XSSWork::noXSS($pav);
 
     $class = mysqli_real_escape_string($link, $_POST["class"]);
-    $class = noXSS::noXSS($class)
+    $class = XSSWork::noXSS($class);
 
     $workType = mysqli_real_escape_string($link, $_POST["workType"]);
-    $workType = noXSS::noXSS($workType)
+    $workType = XSSWork::noXSS($workType);
 
 
     if(($days < 1) || ($pav < 1) || ($pav > 3) || (strtotime(date('Y-m-d')) > strtotime($date_start)))
