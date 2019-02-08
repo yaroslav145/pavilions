@@ -6,22 +6,31 @@
 
     require_once("DateWork.php");
     require_once( "DBwork.php" );
+    require_once( "noXSS.php" );
 
     $link = mysqli_connect(DBwork::$ip, DBwork::$login, DBwork::$pass, "employment_schedule") or die (mysqli_error());
 
     $date_start = mysqli_real_escape_string($link, $_POST["date_start"]);
-    $days = mysqli_real_escape_string($link,$_POST["days"]);
-    $pav = mysqli_real_escape_string($link,$_POST["pav"]);
-    $class = mysqli_real_escape_string($link,$_POST["class"]);
-    $workType = mysqli_real_escape_string($link,$_POST["workType"]);
+    $date_start = noXSS::noXSS($date_start);
+
+    $days = mysqli_real_escape_string($link, $_POST["days"]);
+    $days = noXSS::noXSS($days);
+
+    $pav = mysqli_real_escape_string($link, $_POST["pav"]);
+    $pav = noXSS::noXSS($pav);
+
+    $class = mysqli_real_escape_string($link, $_POST["class"]);
+    $class = noXSS::noXSS($class)
+
+    $workType = mysqli_real_escape_string($link, $_POST["workType"]);
+    $workType = noXSS::noXSS($workType)
+
 
     if(($days < 1) || ($pav < 1) || ($pav > 3) || (strtotime(date('Y-m-d')) > strtotime($date_start)))
     {
         echo "Неверно установлены параметры, возможно вы указали дату меньше сегодняшней";
         exit;
     }
-
-
 
     $pav--;
 
@@ -31,7 +40,7 @@
     (('".$date_start."' between date_start and date_end) or 
     ('".$date_end."' between date_start and date_end) or 
     (date_start between '".$date_start."' and '".$date_end."')) AND 
-    pavilion_id=".$pav);
+    pavilion_id='".$pav."'");
 
     if(mysqli_num_rows($query) == 0)
     {

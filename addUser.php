@@ -10,9 +10,11 @@
 
     $login = mysqli_real_escape_string($link, $_POST["login"]);
     $pass = mysqli_real_escape_string($link, $_POST["pass"]);
-    $fio = mysqli_real_escape_string($link, $_POST["fio"]);
-    $code = mysqli_real_escape_string($link, $_POST["code"]);
 
+    $fio = mysqli_real_escape_string($link, $_POST["fio"]);
+    $fio = noXSS::noXSS($fio);
+
+    $code = mysqli_real_escape_string($link, $_POST["code"]);
 
 
     $query = mysqli_query($link, "SELECT * FROM users WHERE login = '".$login."'");

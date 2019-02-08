@@ -10,6 +10,7 @@
         if($_SESSION['admin'] == 1)
         {
             $query = mysqli_query($link, "DELETE FROM pavilions WHERE id=".$_SESSION["lastEditFieldId"]);
+            $_SESSION["lastEditFieldId"] = -1;
         }
     }
 
