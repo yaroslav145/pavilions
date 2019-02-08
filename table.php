@@ -112,10 +112,10 @@
                 if ($rowspan[$j] == 0)
                 {
                     echo '
-                                <td>-</td>
-                                <td>-</td>
-                                <td>-</td>                   
-                            ';
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>                   
+                    ';
 
                     if (isset($_SESSION['id']) && (strtotime(date('Y-m-d')) <= strtotime($current_date)))
                     {

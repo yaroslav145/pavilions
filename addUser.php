@@ -1,4 +1,9 @@
 <?php
+    session_start();
+
+    if(!isset($_SESSION['id']))
+        exit;
+
     $login = $_POST["login"];
     $pass = $_POST["pass"];
     $fio = $_POST["fio"];

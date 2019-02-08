@@ -7,7 +7,7 @@
 
     if($row = mysqli_fetch_array($query))
     {
-        if(($row["owner_id"] == $_SESSION["id"]) || ($_SESSION['admin'] == 1))
+        if($_SESSION['admin'] == 1)
         {
             $query = mysqli_query($link, "DELETE FROM pavilions WHERE id=".$_SESSION["lastEditFieldId"]);
         }

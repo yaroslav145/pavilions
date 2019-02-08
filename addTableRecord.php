@@ -12,10 +12,9 @@
 
     if(($days < 1) || ($pav < 1) || ($pav > 3) || (strtotime(date('Y-m-d')) > strtotime($date_start)))
     {
-        echo "Неверно установлены параметры, возможно вы указали дату меньше сегодняшнего числа";
+        echo "Неверно установлены параметры, возможно вы указали дату меньше сегодняшней";
         exit;
     }
-
 
     require_once("DateWork.php");
     require_once( "DBwork.php" );

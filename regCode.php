@@ -1,4 +1,9 @@
 <?php
+    session_start();
+
+    if(!isset($_SESSION['id']))
+        exit;
+
     require_once( "DBwork.php" );
     $link = mysqli_connect(DBwork::$ip, DBwork::$login, DBwork::$pass, "employment_schedule") or die (mysqli_error());
 
