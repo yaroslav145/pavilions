@@ -1,12 +1,12 @@
 <?php
     session_start();
 
-    $field_id = $_POST["fieldId"];
-    $_SESSION["lastEditFieldId"] = $field_id;
-
     require_once( "DBwork.php" );
 
     $link = mysqli_connect(DBwork::$ip, DBwork::$login, DBwork::$pass, "employment_schedule") or die (mysqli_error());
+
+    $field_id = mysqli_real_escape_string($link, $_POST["fieldId"]);
+    $_SESSION["lastEditFieldId"] = $field_id;
 
     $query = mysqli_query($link, "SELECT * FROM pavilions WHERE id=".$field_id);
 

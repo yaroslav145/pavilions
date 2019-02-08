@@ -4,14 +4,16 @@
     if(!isset($_SESSION['id']))
         exit;
 
-    $login = $_POST["login"];
-    $pass = $_POST["pass"];
-    $fio = $_POST["fio"];
-    $code = $_POST["code"];
-
     require_once( "DBwork.php" );
 
     $link = mysqli_connect(DBwork::$ip, DBwork::$login, DBwork::$pass, "employment_schedule") or die (mysqli_error());
+
+    $login = mysqli_real_escape_string($link, $_POST["login"]);
+    $pass = mysqli_real_escape_string($link, $_POST["pass"]);
+    $fio = mysqli_real_escape_string($link, $_POST["fio"]);
+    $code = mysqli_real_escape_string($link, $_POST["code"]);
+
+
 
     $query = mysqli_query($link, "SELECT * FROM users WHERE login = '".$login."'");
 

@@ -4,11 +4,16 @@
     if(!isset($_SESSION['id']))
         exit;
 
-    $date_start = $_POST["date_start"];
-    $days = $_POST["days"];
-    $pav = $_POST["pav"];
-    $class = $_POST["class"];
-    $workType = $_POST["workType"];
+    require_once("DateWork.php");
+    require_once( "DBwork.php" );
+
+    $link = mysqli_connect(DBwork::$ip, DBwork::$login, DBwork::$pass, "employment_schedule") or die (mysqli_error());
+
+    $date_start = mysqli_real_escape_string($link, $_POST["date_start"]);
+    $days = mysqli_real_escape_string($link,$_POST["days"]);
+    $pav = mysqli_real_escape_string($link,$_POST["pav"]);
+    $class = mysqli_real_escape_string($link,$_POST["class"]);
+    $workType = mysqli_real_escape_string($link,$_POST["workType"]);
 
     if(($days < 1) || ($pav < 1) || ($pav > 3) || (strtotime(date('Y-m-d')) > strtotime($date_start)))
     {
@@ -16,10 +21,7 @@
         exit;
     }
 
-    require_once("DateWork.php");
-    require_once( "DBwork.php" );
 
-    $link = mysqli_connect(DBwork::$ip, DBwork::$login, DBwork::$pass, "employment_schedule") or die (mysqli_error());
 
     $pav--;
 

@@ -1,14 +1,12 @@
 <?php
-
-
-    $date_start = $_POST["date_start"];
-    $date_end = $_POST["date_end"];
-    $pav = $_POST["pav"];
-    $class = $_POST["class"];
-    $workType = $_POST["workType"];
-
     require_once( "DBwork.php" );
     $link = mysqli_connect(DBwork::$ip, DBwork::$login, DBwork::$pass, "employment_schedule") or die (mysqli_error());
+
+    $date_start = mysqli_real_escape_string($link, $_POST["date_start"]);
+    $date_end = mysqli_real_escape_string($link, $_POST["date_end"]);
+    $pav = mysqli_real_escape_string($link, $_POST["pav"]);
+    $class = mysqli_real_escape_string($link, $_POST["class"]);
+    $workType = mysqli_real_escape_string($link, $_POST["workType"]);
 
     session_start();
 
